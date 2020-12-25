@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import Joi from 'joi'
 import { pool } from '@db'
-import { PostDAL } from '@components/posts'
+import { PostDAL } from '@components/post'
 
 type AvailableMethodResolvers = 'GET' | 'PUT' | 'DELETE';
 

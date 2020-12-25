@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Joi from 'joi'
 import { pool } from "@db"
-import { Post, PostDAL } from '@components/posts'
+import { Post, PostDAL } from '@components/post'
 
 type AvailableMethodResolvers = 'GET' | 'POST';
 
@@ -21,10 +21,10 @@ export default async function postsHandler(
 ) {
   switch (req.method as AvailableMethodResolvers) {
     case 'GET':
-      return get(req, res);
+      return await get(req, res);
       break;
     case 'POST':
-      return post(req, res);
+      return await post(req, res);
       break;
     default:
       res.setHeader('Allow', 'GET,POST');
