@@ -117,7 +117,7 @@ export class PostDAL {
 
   async deletePost(postId: number): Promise<boolean> {
     const query = `
-      DELETE co_posts
+      DELETE FROM co_posts
       WHERE post_id = $1
     `;
 
