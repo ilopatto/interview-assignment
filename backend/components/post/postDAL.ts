@@ -83,6 +83,36 @@ export class PostDAL {
     }
   }
 
+  async getPostsByImpacterId(impacterId: number): Promise<Post[] | undefined> {
+    const query = `
+    SELECT post_id
+      , description
+      , type
+      , status
+      , data
+      , reaction_count
+      , impacter_id
+      , published_at
+      , created_at
+      , updated_at
+    FROM co_posts
+    WHERE impacter_id = $1
+    `;
+
+    try {
+      const result = await this.db.query<PostDTO>(
+        query,
+        [impacterId]
+      );
+
+      return result.rowCount
+        ? result.rows.map(postDTO => new Post(postDTO))
+        : undefined;
+    } catch (queryError) {
+      throw queryError;
+    }
+  }
+
   async createPost(newPost: Post): Promise<boolean> {
     const query = `
     INSERT co_posts(
