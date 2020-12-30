@@ -14,14 +14,27 @@ export interface PostDTO {
   updated_at: Date;
 }
 
+export enum PostType {
+  IMAGES = 'IMAGES',
+  TEXT = 'TEXT',
+  VIDEOS = 'VIDEOS',
+  STORY = 'STORY'
+}
+
+export enum PostStatus {
+  VISIBLE = 'VISIBLE',
+  HIDDEN = 'HIDDEN',
+  DELETED = 'DELETED'
+}
+
 /**
  * Represents co_posts table in db
  */
 export class Post implements PostDTO {
   post_id: number;
   description: string;
-  type: string;
-  status: string;
+  type: PostType;
+  status: PostStatus;
   data: any;
   reaction_count: number;
   impacter_id: number;

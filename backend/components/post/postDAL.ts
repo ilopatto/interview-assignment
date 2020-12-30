@@ -1,5 +1,5 @@
 import type { Pool } from 'pg'
-import { Post, PostDTO } from './post'
+import { PostDTO, PostStatus, PostType, Post } from './post'
 
 export class PostDAL {
   constructor(private db: Pool) { }
@@ -113,14 +113,15 @@ export class PostDAL {
     }
   }
 
-  async createPost(newPost: Post): Promise<boolean> {
+  async createPost(
+    newPost: Pick<PostDTO, 'description' | 'type' | 'status' | 'data' | 'impacter_id'>
+    ): Promise<boolean> {
     const query = `
     INSERT co_posts(
       description,
       type,
       status,
       data,
-      reaction_count,
       impacter_id
     )
     VALUES (
@@ -128,7 +129,6 @@ export class PostDAL {
       ${newPost.type},
       ${newPost.status},
       ${newPost.data},
-      ${newPost.reaction_count},
       ${newPost.impacter_id},
     )`;
 
