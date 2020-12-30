@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Joi from 'joi'
 import { pool } from "@db"
-import { Post, PostDAL } from '@components/post'
+import { Post, PostDAL, PostStatus, PostType } from '@components/post'
 
 type AvailableMethodResolvers = 'GET' | 'POST';
 
@@ -70,8 +70,29 @@ async function get(
   });
 }
 
+const postObjectValidator = Joi.object({
+  description: Joi.string().max(512).default(''),
+  type: Joi.string().valid(...Object.keys(PostType)).required(),
+  status: Joi.string().valid(...Object.keys(PostStatus)).required(),
+  data: Joi.object().required(),
+  impacter_id: Joi.number().required()
+})
+
 async function post(req: NextApiRequest, res: NextApiResponse) {
-  res
+  const validationResult = postObjectValidator.validate(req.body);
+
+  if (validationResult.error) {
+    return res
+      .status(404)
+      .json({
+        message: `Error: ${validationResult.error.name}`
+      });
+  }
+
+  return res
+    .json(validationResult.value);
+
+  return res
     .status(501)
     .json({
       message: 'Not implemented yet'
